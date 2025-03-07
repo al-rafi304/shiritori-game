@@ -8,8 +8,8 @@ function App() {
     const [p2Score, setP2Score] = useState(0)
     const [p1Word, setp1Word] = useState('')
     const [p2Word, setp2Word] = useState('')
-    const [player1, setplayer1] = useState([])
-    const [player2, setplayer2] = useState([])
+    const [p1List, setp1List] = useState([])
+    const [p2List, setp2List] = useState([])
     const [p1Msg, setP1msg] = useState("")
     const [p2Msg, setP2msg] = useState("")
 
@@ -36,7 +36,7 @@ function App() {
         } else if (curr.length < 4) {
             player == 1 ? setP1msg(error_length) : setP2msg(error_length)
             return
-        } else if (player1.includes(curr) || player2.includes(curr)) {
+        } else if (p1List.includes(curr) || p2List.includes(curr)) {
             player == 1 ? setP1msg(error_repeat) : setP2msg(error_repeat)
             return
         }
@@ -47,10 +47,10 @@ function App() {
         )
         if (res.ok) {
             if (player == 1) {
-                setplayer1([...player1, curr])
+                setp1List([...p1List, curr])
                 setP1Score(p1Score + 1)
             } else {
-                setplayer2([...player2, curr])
+                setp2List([...p2List, curr])
                 setP2Score(p2Score + 1)
             }
             currInput.value = ""
@@ -59,17 +59,12 @@ function App() {
         } else {
             player == 1 ? setP1msg(error_invalid) : setP2msg(error_invalid)
             console.log('not a word')
+            player == 1 ? setP1Score(p1Score - 1) : setP2Score(p2Score - 1)
             return
         }
 
         setP1msg('')
         setP2msg('')
-
-        console.log(p1Word)
-        console.log(p2Word)
-
-        console.log('player1', player1)
-        console.log('player2', player2)
     }
 
     return (
@@ -83,7 +78,7 @@ function App() {
                     ></input>
                     <span className='row'>{p1Msg}</span>
                     <ul className='row'>
-                        {player1.map((item) => (
+                        {p1List.map((item) => (
                             <li>{item}</li>
                         )
                         )}
@@ -98,7 +93,7 @@ function App() {
                     ></input>
                     <span className='row'>{p2Msg}</span>
                     <ul className='row'>
-                        {player2.map((item) => (
+                        {p2List.map((item) => (
                             <li>{item}</li>
                         )
                         )}
